@@ -1,0 +1,26 @@
+gvim -o main.cpp goose.hpp talk.cpp shout.cpp 
+clear
+./build1.sh 
+./main
+clear
+./build2.sh 
+./main
+objdump -d talk.o | less
+objdump -d talk.o | c++filt |  less
+objdump -d talk.o --reloc | c++filt |  less
+./disassemble.sh 
+kdiff3 talk.o.dis main.dis --cs LineMatchingPreProcessorCmd='cut -d: -f2-'
+clear
+./build3.sh 
+./main
+g++ main.o -L. -lgoose -o main -###
+clear
+g++ main.o -L. -lgoose -o main -### |& grep '^ '
+clear
+objdump -t talk.o | c++filt | less
+objdump -t talk.o | grep sound
+cat the_goose_is_a_duck.cpp
+g++ -c the_goose_is_a_duck.cpp -o the_goose_is_a_duck.o
+g++ main.o -L. -lgoose -o main -Wl,--wrap=_ZN5Goose5soundE the_goose_is_a_duck.o
+clear
+./main
